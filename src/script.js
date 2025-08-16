@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Common elements
     const showTipCalculatorBtn = document.getElementById('showTipCalculator');
     const showBillSplitterBtn = document.getElementById('showBillSplitter');
+    const showDiscountCalculatorBtn = document.getElementById('showDiscountCalculator');
     const tipCalculatorSection = document.getElementById('tipCalculator');
     const billSplitterSection = document.getElementById('billSplitter');
+    const discountCalculatorSection = document.getElementById('discountCalculator');
 
     // Tip Calculator elements
     const billAmountInput = document.getElementById('billAmount');
@@ -20,30 +22,129 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalTipResultSplit = document.getElementById('totalTipResultSplit');
     const totalPerPersonResult = document.getElementById('totalPerPersonResult');
 
+    // Discount Calculator elements
+    const originalPriceInput = document.getElementById('originalPrice');
+    const discountPercentageInput = document.getElementById('discountPercentage');
+    const amountSavedResult = document.getElementById('amountSavedResult');
+    const finalPriceResult = document.getElementById('finalPriceResult');
+
     let activeTipBtn = null;
+    let currentLanguage = 'es';
+    let currentCurrency = 'CLP';
+
+    const translations = {
+        es: {
+            appTitle: "Centro de Calculadoras",
+            tip_calculator: "Calculadora de Propina",
+            bill_splitter: "Divisor de Cuentas",
+            discount_calculator: "Calculadora de Descuentos",
+            bill_amount: "Monto de la Cuenta",
+            select_tip: "Seleccionar Propina %",
+            tip_amount: "Monto de la Propina",
+            total: "Total",
+            total_bill: "Cuenta Total",
+            tip_percentage: "Propina %",
+            number_of_people: "Número de Personas",
+            include_tip: "Incluir propina en la división",
+            total_tip: "Propina Total",
+            total_per_person: "Total por Persona",
+            original_price: "Precio Original",
+            discount_percentage: "Descuento (%)",
+            amount_saved: "Monto Ahorrado",
+            final_price: "Precio Final"
+        },
+        en: {
+            appTitle: "Calculator Hub",
+            tip_calculator: "Tip Calculator",
+            bill_splitter: "Bill Splitter",
+            discount_calculator: "Discount Calculator",
+            bill_amount: "Bill Amount",
+            select_tip: "Select Tip %",
+            tip_amount: "Tip Amount",
+            total: "Total",
+            total_bill: "Total Bill",
+            tip_percentage: "Tip %",
+            number_of_people: "Number of People",
+            include_tip: "Include tip in split",
+            total_tip: "Total Tip",
+            total_per_person: "Total per person",
+            original_price: "Original Price",
+            discount_percentage: "Discount (%)",
+            amount_saved: "Amount Saved",
+            final_price: "Final Price"
+        }
+    };
+
+    function updateLanguage() {
+        document.querySelectorAll('[data-lang]').forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (translations[currentLanguage][key]) {
+                element.textContent = translations[currentLanguage][key];
+            }
+        });
+        document.getElementById('appTitle').textContent = translations[currentLanguage].appTitle;
+        // Recalculate all values to update currency format
+        calculateTip();
+        calculateBillSplit();
+        calculateDiscount();
+    }
+
+    const languageSelector = document.getElementById('languageSelector');
+    languageSelector.addEventListener('change', (e) => {
+        currentLanguage = e.target.value;
+        updateLanguage();
+    });
+
+    const currencySelector = document.getElementById('currencySelector');
+    currencySelector.addEventListener('change', (e) => {
+        currentCurrency = e.target.value;
+        // Recalculate all values to update currency format
+        calculateTip();
+        calculateBillSplit();
+        calculateDiscount();
+    });
 
     function formatCurrency(value) {
-        return `$${value.toFixed(2)}`;
+        if (currentCurrency === 'USD') {
+            return `$${value.toFixed(2)}`;
+        } else { // CLP
+            return `$${value.toFixed(0)}`;
+        }
     }
 
     // --- Navigation ---
     function showTipCalculator() {
         tipCalculatorSection.classList.remove('hidden');
         billSplitterSection.classList.add('hidden');
+        discountCalculatorSection.classList.add('hidden');
         showTipCalculatorBtn.classList.add('active');
         showBillSplitterBtn.classList.remove('active');
+        showDiscountCalculatorBtn.classList.remove('active');
     }
 
     function showBillSplitter() {
         tipCalculatorSection.classList.add('hidden');
         billSplitterSection.classList.remove('hidden');
+        discountCalculatorSection.classList.add('hidden');
         showTipCalculatorBtn.classList.remove('active');
         showBillSplitterBtn.classList.add('active');
+        showDiscountCalculatorBtn.classList.remove('active');
+    }
+
+    function showDiscountCalculator() {
+        tipCalculatorSection.classList.add('hidden');
+        billSplitterSection.classList.add('hidden');
+        discountCalculatorSection.classList.remove('hidden');
+        showTipCalculatorBtn.classList.remove('active');
+        showBillSplitterBtn.classList.remove('active');
+        showDiscountCalculatorBtn.classList.add('active');
     }
 
     showTipCalculatorBtn.addEventListener('click', showTipCalculator);
     showBillSplitterBtn.addEventListener('click', showBillSplitter);
+    showDiscountCalculatorBtn.addEventListener('click', showDiscountCalculator);
     showTipCalculator(); // Show tip calculator by default
+    updateLanguage(); // Set initial language
 
     // --- Tip Calculator Logic ---
     function calculateTip() {
@@ -74,12 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     tipButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (activeTipBtn) {
-                activeTipBtn.classList.remove('active');
-            }
-            button.classList.add('active');
-            activeTipBtn = button;
+        button.addEventListener('click', (e) => {
+            // Deactivate all tip buttons
+            tipButtons.forEach(btn => btn.classList.remove('active'));
+            // Activate the clicked button
+            e.target.classList.add('active');
+            activeTipBtn = e.target;
             calculateTip();
         });
     });
@@ -112,7 +213,38 @@ document.addEventListener('DOMContentLoaded', () => {
     peopleCountInput.addEventListener('input', calculateBillSplit);
     includeTipCheckbox.addEventListener('change', calculateBillSplit);
 
+    // --- Discount Calculator Logic ---
+    function calculateDiscount() {
+        const originalPrice = parseFloat(originalPriceInput.value) || 0;
+        const discountPercentage = parseFloat(discountPercentageInput.value) || 0;
+
+        if (originalPrice < 0) return;
+
+        const amountSaved = originalPrice * (discountPercentage / 100);
+        const finalPrice = originalPrice - amountSaved;
+
+        amountSavedResult.textContent = formatCurrency(amountSaved);
+        finalPriceResult.textContent = formatCurrency(finalPrice);
+    }
+
+    originalPriceInput.addEventListener('input', calculateDiscount);
+    discountPercentageInput.addEventListener('input', calculateDiscount);
+
+
+    // --- Theme Switcher Logic ---
+    const themeSwitcher = document.getElementById('themeSwitcher');
+    themeSwitcher.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        // Update icon
+        if (document.body.classList.contains('dark-mode')) {
+            themeSwitcher.textContent = '🌙';
+        } else {
+            themeSwitcher.textContent = '☀️';
+        }
+    });
+
     // Initial calculations
     calculateTip();
     calculateBillSplit();
+    calculateDiscount();
 });

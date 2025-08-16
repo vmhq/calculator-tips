@@ -8,22 +8,34 @@
 </head>
 <body>
     <header>
-        <h1>Calculator Hub</h1>
+        <h1 id="appTitle">Calculator Hub</h1>
+        <div class="controls">
+            <select id="languageSelector">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+            <select id="currencySelector">
+                <option value="CLP">CLP</option>
+                <option value="USD">USD</option>
+            </select>
+            <button id="themeSwitcher" class="theme-btn">☀️</button>
+        </div>
         <nav>
-            <button id="showTipCalculator">Tip Calculator</button>
-            <button id="showBillSplitter">Bill Splitter</button>
+            <button id="showTipCalculator" data-lang="tip_calculator">Tip Calculator</button>
+            <button id="showBillSplitter" data-lang="bill_splitter">Bill Splitter</button>
+            <button id="showDiscountCalculator" data-lang="discount_calculator">Discount Calculator</button>
         </nav>
     </header>
 
     <main>
         <section id="tipCalculator" class="calculator">
-            <h2>Tip Calculator</h2>
+            <h2 data-lang="tip_calculator">Tip Calculator</h2>
             <div class="input-group">
-                <label for="billAmount">Bill Amount ($)</label>
+                <label for="billAmount" data-lang="bill_amount">Bill Amount ($)</label>
                 <input type="number" id="billAmount" placeholder="0.00" min="0">
             </div>
             <div class="input-group">
-                <label>Select Tip %</label>
+                <label data-lang="select_tip">Select Tip %</label>
                 <div class="tip-options">
                     <button class="tip-btn" data-tip="10">10%</button>
                     <button class="tip-btn" data-tip="15">15%</button>
@@ -32,42 +44,64 @@
             </div>
             <div class="results">
                 <div class="result-item">
-                    <p>Tip Amount</p>
+                    <p data-lang="tip_amount">Tip Amount</p>
                     <span id="tipAmountResult">$0.00</span>
                 </div>
                 <div class="result-item">
-                    <p>Total</p>
+                    <p data-lang="total">Total</p>
                     <span id="totalAmountResult">$0.00</span>
                 </div>
             </div>
         </section>
 
         <section id="billSplitter" class="calculator hidden">
-            <h2>Bill Splitter</h2>
+            <h2 data-lang="bill_splitter">Bill Splitter</h2>
             <div class="input-group">
-                <label for="totalBill">Total Bill ($)</label>
+                <label for="totalBill" data-lang="total_bill">Total Bill ($)</label>
                 <input type="number" id="totalBill" placeholder="0.00" min="0">
             </div>
             <div class="input-group">
-                <label for="tipPercentageSplit">Tip %</label>
+                <label for="tipPercentageSplit" data-lang="tip_percentage">Tip %</label>
                 <input type="number" id="tipPercentageSplit" placeholder="15" value="15" min="0">
             </div>
             <div class="input-group">
-                <label for="peopleCount">Number of People</label>
+                <label for="peopleCount" data-lang="number_of_people">Number of People</label>
                 <input type="number" id="peopleCount" value="1" min="1">
             </div>
             <div class="input-group checkbox-group">
                 <input type="checkbox" id="includeTip" checked>
-                <label for="includeTip">Include tip in split</label>
+                <label for="includeTip" data-lang="include_tip">Include tip in split</label>
             </div>
             <div class="results">
                 <div class="result-item">
-                    <p>Total Tip</p>
+                    <p data-lang="total_tip">Total Tip</p>
                     <span id="totalTipResultSplit">$0.00</span>
                 </div>
                 <div class="result-item">
-                    <p>Total per person</p>
+                    <p data-lang="total_per_person">Total per person</p>
                     <span id="totalPerPersonResult">$0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="discountCalculator" class="calculator hidden">
+            <h2 data-lang="discount_calculator">Discount Calculator</h2>
+            <div class="input-group">
+                <label for="originalPrice" data-lang="original_price">Original Price ($)</label>
+                <input type="number" id="originalPrice" placeholder="0.00" min="0">
+            </div>
+            <div class="input-group">
+                <label for="discountPercentage" data-lang="discount_percentage">Discount (%)</label>
+                <input type="number" id="discountPercentage" placeholder="10" value="10" min="0">
+            </div>
+            <div class="results">
+                <div class="result-item">
+                    <p data-lang="amount_saved">Amount Saved</p>
+                    <span id="amountSavedResult">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <p data-lang="final_price">Final Price</p>
+                    <span id="finalPriceResult">$0.00</span>
                 </div>
             </div>
         </section>

@@ -11,19 +11,17 @@
     --active-button-bg-color: #0056b3;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #121212;
-        --text-color: #e0e0e0;
-        --primary-color: #4dabf7;
-        --card-bg-color: #1e1e1e;
-        --border-color: #444;
-        --input-bg-color: #333;
-        --button-bg-color: #4dabf7;
-        --button-text-color: #121212;
-        --button-hover-bg-color: #82c9ff;
-        --active-button-bg-color: #82c9ff;
-    }
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #4dabf7;
+    --card-bg-color: #1e1e1e;
+    --border-color: #444;
+    --input-bg-color: #333;
+    --button-bg-color: #4dabf7;
+    --button-text-color: #121212;
+    --button-hover-bg-color: #82c9ff;
+    --active-button-bg-color: #82c9ff;
 }
 
 body {
@@ -41,6 +39,13 @@ body {
 header {
     text-align: center;
     margin-bottom: 2rem;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
 }
 
 nav {
