@@ -1,11 +1,13 @@
 # Calculator Hub
 
-A simple, modern web application featuring a Tip Calculator and a Bill Splitter. The application is containerized using Docker and served with Nginx.
+A simple, modern web application featuring a Tip Calculator, a Bill Splitter, and a Discount Calculator. The application is containerized using Docker and served with Nginx.
 
 ## Features
 
 -   **Tip Calculator**: Calculate the tip and total amount for a given bill. Includes quick options for 10% and 15% tips, as well as a custom percentage.
 -   **Bill Splitter**: Split a total bill, including a tip, among a number of people.
+-   **Discount Calculator**: Easily calculate the final price after a discount and see how much you've saved.
+-   **Multi-language & Multi-currency**: Supports English and Spanish, and formats currency for USD and CLP.
 -   **Responsive Design**: The user interface is optimized for both desktop and mobile devices.
 -   **Dark Mode**: Automatically adapts to your system's preferred color scheme (light or dark).
 
