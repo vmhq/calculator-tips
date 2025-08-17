@@ -473,6 +473,10 @@ main {
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
     .tip-options {
         grid-template-columns: 1fr;
     }
