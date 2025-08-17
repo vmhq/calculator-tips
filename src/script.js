@@ -113,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatCurrency(value) {
         if (currentCurrency === 'USD') {
             return `$${value.toFixed(2)}`;
+        } else if (currentCurrency === 'EUR') {
+            return `€${value.toFixed(2)}`;
         } else { // CLP
             return `$${Math.round(value).toLocaleString('es-CL')}`;
         }
