@@ -156,9 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
             customTipInput.value = '';
         }
 
-        if (billAmount < 0) return;
+        if (billAmount < 0) {
+            tipAmountResult.textContent = formatCurrency(0);
+            totalAmountResult.textContent = formatCurrency(0);
+            return;
+        }
 
-        const tipAmount = billAmount * (tipPercentage / 100);
+        let tipAmount = billAmount * (tipPercentage / 100);
+        // Round to handle potential floating point inaccuracies
+        tipAmount = Math.round(tipAmount * 100) / 100;
         const totalAmount = billAmount + tipAmount;
 
         tipAmountResult.textContent = formatCurrency(tipAmount);
@@ -194,7 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const peopleCount = parseInt(peopleCountInput.value) || 1;
         const includeTip = includeTipCheckbox.checked;
 
-        if (totalBill < 0 || peopleCount < 1) return;
+        if (totalBill < 0 || peopleCount < 1) {
+            totalTipResultSplit.textContent = formatCurrency(0);
+            totalPerPersonResult.textContent = formatCurrency(0);
+            return;
+        }
 
         const totalTip = totalBill * (tipPercentage / 100);
         let totalWithTip = totalBill + totalTip;
@@ -220,7 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalPrice = parseFloat(originalPriceInput.value) || 0;
         const discountPercentage = parseFloat(discountPercentageInput.value) || 0;
 
-        if (originalPrice < 0) return;
+        if (originalPrice < 0) {
+            amountSavedResult.textContent = formatCurrency(0);
+            finalPriceResult.textContent = formatCurrency(0);
+            return;
+        }
 
         const amountSaved = originalPrice * (discountPercentage / 100);
         const finalPrice = originalPrice - amountSaved;
