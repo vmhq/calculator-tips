@@ -108,9 +108,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentCurrency === 'USD') {
             return `$${value.toFixed(2)}`;
         } else { // CLP
-            return `$${value.toFixed(0)}`;
+            return `$${Math.round(value).toLocaleString('es-CL')}`;
         }
     }
+
+    // --- Input Validation ---
+    function validateDecimalInput(event) {
+        const input = event.target;
+        let value = input.value;
+        
+        // Allow only numbers and a single decimal point
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Ensure only one decimal point is present
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+        
+        input.value = value;
+    }
+
+    billAmountInput.addEventListener('input', validateDecimalInput);
+    totalBillInput.addEventListener('input', validateDecimalInput);
+    originalPriceInput.addEventListener('input', validateDecimalInput);
 
     // --- Navigation ---
     function showTipCalculator() {
@@ -153,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (activeTipBtn) {
             tipPercentage = parseFloat(activeTipBtn.dataset.tip);
-            customTipInput.value = '';
         }
 
         if (billAmount < 0) {
@@ -162,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Work with cents to avoid floating point issues
         const billInCents = Math.round(billAmount * 100);
         const tipAmountInCents = Math.round(billInCents * (tipPercentage / 100));
         const totalAmountInCents = billInCents + tipAmountInCents;
@@ -171,9 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
         totalAmountResult.textContent = formatCurrency(totalAmountInCents / 100);
     }
 
-    billAmountInput.addEventListener('input', calculateTip);
-    customTipInput.addEventListener('input', () => {
-        console.log('Custom tip input changed');
+    billAmountInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        calculateTip();
+    });
+
+    customTipInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
         if (activeTipBtn) {
             activeTipBtn.classList.remove('active');
             activeTipBtn = null;
@@ -183,12 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tipButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            console.log('Tip button clicked', e.target.dataset.tip);
-            // Deactivate all tip buttons
             tipButtons.forEach(btn => btn.classList.remove('active'));
-            // Activate the clicked button
             e.target.classList.add('active');
             activeTipBtn = e.target;
+            customTipInput.value = '';
             calculateTip();
         });
     });
@@ -222,9 +243,20 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPerPersonResult.textContent = formatCurrency(amountPerPersonInCents / 100);
     }
 
-    totalBillInput.addEventListener('input', calculateBillSplit);
-    tipPercentageSplitInput.addEventListener('input', calculateBillSplit);
-    peopleCountInput.addEventListener('input', calculateBillSplit);
+    totalBillInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        calculateBillSplit();
+    });
+
+    tipPercentageSplitInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        calculateBillSplit();
+    });
+
+    peopleCountInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        calculateBillSplit();
+    });
     includeTipCheckbox.addEventListener('change', calculateBillSplit);
 
     // --- Discount Calculator Logic ---
@@ -246,8 +278,15 @@ document.addEventListener('DOMContentLoaded', () => {
         finalPriceResult.textContent = formatCurrency(finalPriceInCents / 100);
     }
 
-    originalPriceInput.addEventListener('input', calculateDiscount);
-    discountPercentageInput.addEventListener('input', calculateDiscount);
+    originalPriceInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        calculateDiscount();
+    });
+
+    discountPercentageInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        calculateDiscount();
+    });
 
 
     // --- Theme Switcher Logic ---

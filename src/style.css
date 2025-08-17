@@ -97,7 +97,8 @@ main {
     font-weight: bold;
 }
 
-.input-group input[type="number"] {
+.input-group input[type="number"],
+.input-group input[type="text"] {
     width: 100%;
     padding: 0.75rem;
     border-radius: 5px;
