@@ -33,7 +33,7 @@ You need to have the following software installed on your system:
 
 ### Installation & Running
 
-#### Using Docker Compose (Recommended)
+#### Running the Application
 
 1.  **Clone the repository:**
     ```sh
@@ -45,40 +45,17 @@ You need to have the following software installed on your system:
     cd calculator-tips
     ```
 
-3.  **Build and run the application using Docker Compose:**
+3.  **Run the application using Docker Compose:**
     ```sh
-    docker-compose up -d --build
+    docker-compose up -d
     ```
+    This command will pull the pre-built Docker image from the GitHub Container Registry (`ghcr.io`) and start the application. If you encounter authentication errors, you may need to log in to `ghcr.io` first.
 
-The application will be available at `http://localhost:8080`.
+The application will be available at **`http://localhost:8680`**.
 
 To stop the application, run:
 ```sh
 docker-compose down
-```
-
-#### Using Docker
-
-If you prefer not to use Docker Compose, you can build and run the container using Docker commands directly.
-
-1.  **Clone and navigate to the project directory** (as shown above).
-
-2.  **Build the Docker image:**
-    ```sh
-    docker build -t calculator-app .
-    ```
-
-3.  **Run the Docker container:**
-    ```sh
-    docker run -d -p 8080:80 --name calculator-app-container calculator-app
-    ```
-
-The application will be available at `http://localhost:8080`.
-
-To stop and remove the container, run:
-```sh
-docker stop calculator-app-container
-docker rm calculator-app-container
 ```
 
 ## How It Works
