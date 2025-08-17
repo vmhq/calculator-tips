@@ -162,13 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let tipAmount = billAmount * (tipPercentage / 100);
-        // Round to handle potential floating point inaccuracies
-        tipAmount = Math.round(tipAmount * 100) / 100;
-        const totalAmount = billAmount + tipAmount;
+        // Work with cents to avoid floating point issues
+        const billInCents = Math.round(billAmount * 100);
+        const tipAmountInCents = Math.round(billInCents * (tipPercentage / 100));
+        const totalAmountInCents = billInCents + tipAmountInCents;
 
-        tipAmountResult.textContent = formatCurrency(tipAmount);
-        totalAmountResult.textContent = formatCurrency(totalAmount);
+        tipAmountResult.textContent = formatCurrency(tipAmountInCents / 100);
+        totalAmountResult.textContent = formatCurrency(totalAmountInCents / 100);
     }
 
     billAmountInput.addEventListener('input', calculateTip);
@@ -206,18 +206,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const totalTip = totalBill * (tipPercentage / 100);
-        let totalWithTip = totalBill + totalTip;
-        let amountPerPerson;
+        const totalBillInCents = Math.round(totalBill * 100);
+        const totalTipInCents = Math.round(totalBillInCents * (tipPercentage / 100));
+        
+        let amountPerPersonInCents;
 
         if (includeTip) {
-            amountPerPerson = totalWithTip / peopleCount;
+            const totalWithTipInCents = totalBillInCents + totalTipInCents;
+            amountPerPersonInCents = totalWithTipInCents / peopleCount;
         } else {
-            amountPerPerson = totalBill / peopleCount;
+            amountPerPersonInCents = totalBillInCents / peopleCount;
         }
 
-        totalTipResultSplit.textContent = formatCurrency(totalTip);
-        totalPerPersonResult.textContent = formatCurrency(amountPerPerson);
+        totalTipResultSplit.textContent = formatCurrency(totalTipInCents / 100);
+        totalPerPersonResult.textContent = formatCurrency(amountPerPersonInCents / 100);
     }
 
     totalBillInput.addEventListener('input', calculateBillSplit);
@@ -236,11 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const amountSaved = originalPrice * (discountPercentage / 100);
-        const finalPrice = originalPrice - amountSaved;
+        const originalPriceInCents = Math.round(originalPrice * 100);
+        const amountSavedInCents = Math.round(originalPriceInCents * (discountPercentage / 100));
+        const finalPriceInCents = originalPriceInCents - amountSavedInCents;
 
-        amountSavedResult.textContent = formatCurrency(amountSaved);
-        finalPriceResult.textContent = formatCurrency(finalPrice);
+        amountSavedResult.textContent = formatCurrency(amountSavedInCents / 100);
+        finalPriceResult.textContent = formatCurrency(finalPriceInCents / 100);
     }
 
     originalPriceInput.addEventListener('input', calculateDiscount);
