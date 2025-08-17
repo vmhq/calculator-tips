@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const translations = {
         es: {
-            appTitle: "Centro de Calculadoras",
+            appTitle: "Calculator Hub",
             tip_calculator: "Calculadora de Propina",
             bill_splitter: "Divisor de Cuentas",
             discount_calculator: "Calculadora de Descuentos",
