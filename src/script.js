@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     billAmountInput.addEventListener('input', calculateTip);
     customTipInput.addEventListener('input', () => {
+        console.log('Custom tip input changed');
         if (activeTipBtn) {
             activeTipBtn.classList.remove('active');
             activeTipBtn = null;
@@ -176,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tipButtons.forEach(button => {
         button.addEventListener('click', (e) => {
+            console.log('Tip button clicked', e.target.dataset.tip);
             // Deactivate all tip buttons
             tipButtons.forEach(btn => btn.classList.remove('active'));
             // Activate the clicked button
