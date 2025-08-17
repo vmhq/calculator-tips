@@ -51,7 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
             original_price: "Precio Original",
             discount_percentage: "Descuento (%)",
             amount_saved: "Monto Ahorrado",
-            final_price: "Precio Final"
+            final_price: "Precio Final",
+            system_theme: "Sistema",
+            light_theme: "Claro",
+            dark_theme: "Oscuro"
         },
         en: {
             appTitle: "Calculator Hub",
@@ -71,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
             original_price: "Original Price",
             discount_percentage: "Discount (%)",
             amount_saved: "Amount Saved",
-            final_price: "Final Price"
+            final_price: "Final Price",
+            system_theme: "System",
+            light_theme: "Light",
+            dark_theme: "Dark"
         }
     };
 
@@ -290,16 +296,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Theme Switcher Logic ---
-    const themeSwitcher = document.getElementById('themeSwitcher');
-    themeSwitcher.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        // Update icon
-        if (document.body.classList.contains('dark-mode')) {
-            themeSwitcher.textContent = '🌙';
+    const themeSelector = document.getElementById('themeSelector');
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
         } else {
-            themeSwitcher.textContent = '☀️';
+            document.body.classList.remove('dark-mode');
+        }
+    }
+
+    function handleSystemThemeChange(e) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        applyTheme(newTheme);
+        // If the selector is on 'system', we update the theme, but not the selector itself
+        if (themeSelector.value === 'system') {
+            localStorage.removeItem('theme');
+        }
+    }
+
+    const systemThemeWatcher = window.matchMedia('(prefers-color-scheme: dark)');
+    systemThemeWatcher.addEventListener('change', handleSystemThemeChange);
+
+    themeSelector.addEventListener('change', (e) => {
+        const selectedTheme = e.target.value;
+        localStorage.setItem('theme', selectedTheme);
+        if (selectedTheme === 'system') {
+            applyTheme(systemThemeWatcher.matches ? 'dark' : 'light');
+        } else {
+            applyTheme(selectedTheme);
         }
     });
+
+    function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSelector.value = savedTheme;
+            if (savedTheme === 'system') {
+                applyTheme(systemThemeWatcher.matches ? 'dark' : 'light');
+            } else {
+                applyTheme(savedTheme);
+            }
+        } else {
+            // No theme saved, use system setting
+            themeSelector.value = 'system';
+            applyTheme(systemThemeWatcher.matches ? 'dark' : 'light');
+        }
+    }
+
+    initializeTheme();
 
     // Initial calculations
     calculateTip();
