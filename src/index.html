@@ -4,36 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>">
 </head>
 <body>
-    <header>
-        <h1 id="appTitle">💸 Calculator Hub 💸</h1>
-        <div class="controls">
-            <select id="languageSelector">
-                <option value="es">Español</option>
-                <option value="en">English</option>
-            </select>
-            <select id="currencySelector">
-                <option value="CLP">CLP</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-            </select>
-            <select id="themeSelector">
-                <option value="system" data-lang="system_theme">System</option>
-                <option value="light" data-lang="light_theme">Light</option>
-                <option value="dark" data-lang="dark_theme">Dark</option>
-            </select>
-        </div>
-        <nav>
-            <button id="showTipCalculator" data-lang="tip_calculator">Tip Calculator</button>
-            <button id="showBillSplitter" data-lang="bill_splitter">Bill Splitter</button>
-            <button id="showDiscountCalculator" data-lang="discount_calculator">Discount Calculator</button>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <h1 id="appTitle">💸 Calculator Hub 💸</h1>
+            <div class="controls">
+                <select id="languageSelector">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+                <select id="currencySelector">
+                    <option value="CLP">CLP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+                <select id="themeSelector">
+                    <option value="system" data-lang="system_theme">System</option>
+                    <option value="light" data-lang="light_theme">Light</option>
+                    <option value="dark" data-lang="dark_theme">Dark</option>
+                </select>
+            </div>
+            <nav>
+                <button id="showTipCalculator" data-lang="tip_calculator">Tip Calculator</button>
+                <button id="showBillSplitter" data-lang="bill_splitter">Bill Splitter</button>
+                <button id="showDiscountCalculator" data-lang="discount_calculator">Discount Calculator</button>
+            </nav>
+        </header>
 
-    <main>
+        <main>
         <section id="tipCalculator" class="calculator">
             <h2 data-lang="tip_calculator">Tip Calculator</h2>
             <div class="input-group">
@@ -111,7 +115,8 @@
                 </div>
             </div>
         </section>
-    </main>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
