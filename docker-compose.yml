@@ -4,4 +4,4 @@ services:
     build: .
     container_name: calculator-app
     ports:
-      - "8080:80"
+      - "8680:80"
