@@ -1,6 +1,7 @@
 services:
   web:
     image: ghcr.io/vmhq/calculator-tips:latest
+    restart: unless-stopped
     container_name: calculator-app
     ports:
       - "8680:80"
