@@ -137,10 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = value;
     }
 
-    billAmountInput.addEventListener('input', validateDecimalInput);
-    totalBillInput.addEventListener('input', validateDecimalInput);
-    originalPriceInput.addEventListener('input', validateDecimalInput);
-
     // --- Navigation ---
     function showTipCalculator() {
         tipCalculatorSection.classList.remove('hidden');
@@ -199,12 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     billAmountInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         calculateTip();
     });
 
     customTipInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         if (activeTipBtn) {
             activeTipBtn.classList.remove('active');
             activeTipBtn = null;
@@ -252,12 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     totalBillInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         calculateBillSplit();
     });
 
     tipPercentageSplitInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         calculateBillSplit();
     });
 
@@ -287,12 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     originalPriceInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         calculateDiscount();
     });
 
     discountPercentageInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        validateDecimalInput(e);
         calculateDiscount();
     });
 
