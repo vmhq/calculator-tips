@@ -7,9 +7,9 @@ A simple, modern web application featuring a Tip Calculator, a Bill Splitter, an
 -   **Tip Calculator**: Calculate the tip and total amount for a given bill. Includes quick options for 10% and 15% tips, as well as a custom percentage.
 -   **Bill Splitter**: Split a total bill, including a tip, among a number of people.
 -   **Discount Calculator**: Easily calculate the final price after a discount and see how much you've saved.
--   **Multi-language & Multi-currency**: Supports English and Spanish, and formats currency for USD and CLP.
+-   **Multi-language & Multi-currency**: Supports English and Spanish, and formats currency for USD, EUR, and CLP. The default language is Spanish and the default currency is CLP.
 -   **Responsive Design**: The user interface is optimized for both desktop and mobile devices.
--   **Dark Mode**: Automatically adapts to your system's preferred color scheme (light or dark).
+-   **Dark Mode**: Automatically adapts to your system's preferred color scheme (light or dark), with a manual override.
 
 ## Technologies Used
 
@@ -67,3 +67,7 @@ The application is a single-page application built with vanilla HTML, CSS, and J
 -   `src/script.js`: Handles all the logic, including switching between calculators and performing the calculations.
 
 The entire application is served as a static site by an Nginx web server running inside a Docker container.
+
+## Code Documentation
+
+The JavaScript code in `src/script.js` is fully documented with JSDoc comments. These comments explain the purpose of each function, its parameters, and its return values, making it easier to understand and maintain the codebase.
