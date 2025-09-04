@@ -1,3 +1,8 @@
+/**
+ * Main entry point for the application.
+ * This function is executed when the DOM is fully loaded.
+ * It sets up all the event listeners and initializes the application state.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // Common elements
     const showTipCalculatorBtn = document.getElementById('showTipCalculator');
@@ -81,6 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Updates the UI text based on the selected language.
+     * It iterates through all elements with a 'data-lang' attribute
+     * and sets their text content to the corresponding translation.
+     * Also recalculates all calculator values to apply new language formatting if needed.
+     */
     function updateLanguage() {
         document.querySelectorAll('[data-lang]').forEach(element => {
             const key = element.getAttribute('data-lang');
@@ -96,12 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const languageSelector = document.getElementById('languageSelector');
+    // Updates the application language and recalculates values when the language is changed.
     languageSelector.addEventListener('change', (e) => {
         currentLanguage = e.target.value;
         updateLanguage();
     });
 
     const currencySelector = document.getElementById('currencySelector');
+    // Updates the application currency and recalculates values to apply the new format.
     currencySelector.addEventListener('change', (e) => {
         currentCurrency = e.target.value;
         // Recalculate all values to update currency format
@@ -110,6 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateDiscount();
     });
 
+    /**
+     * Formats a numeric value into a currency string based on the selected currency.
+     * @param {number} value - The numeric value to format.
+     * @returns {string} The formatted currency string (e.g., "$1,234", "$12.34").
+     */
     function formatCurrency(value) {
         if (currentCurrency === 'USD') {
             return `$${value.toFixed(2)}`;
@@ -121,6 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Input Validation ---
+    /**
+     * Validates user input in a text field to allow only numbers and a single decimal point.
+     * This function is typically used as an event handler for the 'input' event.
+     * @param {Event} event - The input event object.
+     */
     function validateDecimalInput(event) {
         const input = event.target;
         let value = input.value;
@@ -138,6 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Navigation ---
+    /**
+     * Displays the Tip Calculator section and hides the others.
+     * Also updates the active state of the navigation buttons.
+     */
     function showTipCalculator() {
         tipCalculatorSection.classList.remove('hidden');
         billSplitterSection.classList.add('hidden');
@@ -147,6 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showDiscountCalculatorBtn.classList.remove('active');
     }
 
+    /**
+     * Displays the Bill Splitter section and hides the others.
+     * Also updates the active state of the navigation buttons.
+     */
     function showBillSplitter() {
         tipCalculatorSection.classList.add('hidden');
         billSplitterSection.classList.remove('hidden');
@@ -156,6 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showDiscountCalculatorBtn.classList.remove('active');
     }
 
+    /**
+     * Displays the Discount Calculator section and hides the others.
+     * Also updates the active state of the navigation buttons.
+     */
     function showDiscountCalculator() {
         tipCalculatorSection.classList.add('hidden');
         billSplitterSection.classList.add('hidden');
@@ -172,6 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLanguage(); // Set initial language
 
     // --- Tip Calculator Logic ---
+    /**
+     * Calculates the tip and total amount based on the bill amount and tip percentage.
+     * It reads values from the input fields, performs the calculation,
+     * and updates the result elements in the UI.
+     * Handles both preset tip buttons and custom tip input.
+     */
     function calculateTip() {
         const billAmount = parseFloat(billAmountInput.value) || 0;
         let tipPercentage = parseFloat(customTipInput.value) || 0;
@@ -194,11 +235,13 @@ document.addEventListener('DOMContentLoaded', () => {
         totalAmountResult.textContent = formatCurrency(totalAmountInCents / 100);
     }
 
+    // Validates and recalculates the tip whenever the bill amount changes.
     billAmountInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         calculateTip();
     });
 
+    // Validates and recalculates the tip whenever the custom tip amount changes.
     customTipInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         if (activeTipBtn) {
@@ -208,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateTip();
     });
 
+    // Handles clicks on the preset tip percentage buttons.
     tipButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             tipButtons.forEach(btn => btn.classList.remove('active'));
@@ -219,6 +263,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Bill Splitter Logic ---
+    /**
+     * Calculates the total tip and the amount per person for a split bill.
+     * It reads values from the input fields, considers whether to include the tip
+     * in the split, and updates the result elements in the UI.
+     */
     function calculateBillSplit() {
         const totalBill = parseFloat(totalBillInput.value) || 0;
         const tipPercentage = parseFloat(tipPercentageSplitInput.value) || 0;
@@ -247,23 +296,32 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPerPersonResult.textContent = formatCurrency(amountPerPersonInCents / 100);
     }
 
+    // Validates and recalculates the bill split whenever the total bill amount changes.
     totalBillInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         calculateBillSplit();
     });
 
+    // Validates and recalculates the bill split whenever the tip percentage changes.
     tipPercentageSplitInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         calculateBillSplit();
     });
 
+    // Validates and recalculates the bill split whenever the number of people changes.
     peopleCountInput.addEventListener('input', (e) => {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
         calculateBillSplit();
     });
+    // Recalculates the bill split whenever the 'include tip' checkbox is changed.
     includeTipCheckbox.addEventListener('change', calculateBillSplit);
 
     // --- Discount Calculator Logic ---
+    /**
+     * Calculates the amount saved and the final price after a discount.
+     * It reads the original price and discount percentage from input fields,
+     * performs the calculation, and updates the result elements in the UI.
+     */
     function calculateDiscount() {
         const originalPrice = parseFloat(originalPriceInput.value) || 0;
         const discountPercentage = parseFloat(discountPercentageInput.value) || 0;
@@ -282,11 +340,13 @@ document.addEventListener('DOMContentLoaded', () => {
         finalPriceResult.textContent = formatCurrency(finalPriceInCents / 100);
     }
 
+    // Validates and recalculates the discount whenever the original price changes.
     originalPriceInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         calculateDiscount();
     });
 
+    // Validates and recalculates the discount whenever the discount percentage changes.
     discountPercentageInput.addEventListener('input', (e) => {
         validateDecimalInput(e);
         calculateDiscount();
@@ -296,6 +356,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Theme Switcher Logic ---
     const themeSelector = document.getElementById('themeSelector');
 
+    /**
+     * Applies the specified theme to the application.
+     * @param {string} theme - The theme to apply ('dark' or 'light').
+     */
     function applyTheme(theme) {
         if (theme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -304,6 +368,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Handles changes in the system's preferred color scheme.
+     * This function is a listener for media query changes.
+     * @param {Event} e - The media query list event, which has a `matches` property.
+     */
     function handleSystemThemeChange(e) {
         const newTheme = e.matches ? 'dark' : 'light';
         applyTheme(newTheme);
@@ -316,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemThemeWatcher = window.matchMedia('(prefers-color-scheme: dark)');
     systemThemeWatcher.addEventListener('change', handleSystemThemeChange);
 
+    // Applies the selected theme and saves the preference to local storage.
     themeSelector.addEventListener('change', (e) => {
         const selectedTheme = e.target.value;
         localStorage.setItem('theme', selectedTheme);
@@ -326,6 +396,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    /**
+     * Initializes the application theme based on user's saved preference
+     * or the system's preferred color scheme. It checks localStorage for a
+     * saved theme and applies it, otherwise it defaults to the system theme.
+     */
     function initializeTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
