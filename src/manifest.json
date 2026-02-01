@@ -1,0 +1,47 @@
+{
+  "name": "Calculator Hub - Tip, Bill Split & Discount Calculator",
+  "short_name": "Calculator Hub",
+  "description": "Modern multi-currency calculator app with tip calculator, bill splitter, and discount calculator. Supports USD, EUR, CLP, MXN, GBP, ARS.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0ea5e9",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "utilities", "productivity"],
+  "lang": "es",
+  "dir": "ltr",
+  "scope": "/",
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Tip Calculator",
+      "short_name": "Tip",
+      "description": "Calculate tips quickly",
+      "url": "/?calculator=tip",
+      "icons": []
+    },
+    {
+      "name": "Bill Splitter",
+      "short_name": "Split",
+      "description": "Split bills among people",
+      "url": "/?calculator=split",
+      "icons": []
+    },
+    {
+      "name": "Discount Calculator",
+      "short_name": "Discount",
+      "description": "Calculate discounts",
+      "url": "/?calculator=discount",
+      "icons": []
+    }
+  ],
+  "prefer_related_applications": false
+}
