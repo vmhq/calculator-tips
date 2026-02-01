@@ -1,118 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator Hub</title>
+    <meta name="description" content="Calculadora de propinas, divisor de cuentas y calculadora de descuentos. Multiidioma y multidivisa con soporte para USD, EUR, CLP, MXN, GBP, ARS.">
+    <meta name="keywords" content="calculadora,propina,descuento,tip calculator,bill splitter,discount calculator,calculator hub">
+    <meta name="author" content="Calculator Hub">
+    <meta property="og:title" content="Calculator Hub - Tip, Bill Split & Discount Calculator">
+    <meta property="og:description" content="Modern multi-currency calculator app with tip calculator, bill splitter, and discount calculator.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://calculator-hub.app">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0ea5e9">
+    <title>Calculator Hub - Tip, Bill Split & Discount Calculator</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>">
 </head>
 <body>
     <div class="container">
         <header>
             <h1 id="appTitle">💸 Calculator Hub 💸</h1>
             <div class="controls">
-                <select id="languageSelector">
+                <select id="languageSelector" aria-label="Select language">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
-                <select id="currencySelector">
-                    <option value="CLP">CLP</option>
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
+                <select id="currencySelector" aria-label="Select currency">
+                    <option value="CLP">CLP ($)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="MXN">MXN ($)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="ARS">ARS ($)</option>
                 </select>
-                <select id="themeSelector">
+                <select id="themeSelector" aria-label="Select theme">
                     <option value="system" data-lang="system_theme">System</option>
                     <option value="light" data-lang="light_theme">Light</option>
                     <option value="dark" data-lang="dark_theme">Dark</option>
                 </select>
+                <div class="smart-rounding-control">
+                    <input type="checkbox" id="smartRoundingToggle">
+                    <label for="smartRoundingToggle" data-lang="smart_rounding">Smart rounding</label>
+                </div>
             </div>
-            <nav>
-                <button id="showTipCalculator" data-lang="tip_calculator">Tip Calculator</button>
-                <button id="showBillSplitter" data-lang="bill_splitter">Bill Splitter</button>
-                <button id="showDiscountCalculator" data-lang="discount_calculator">Discount Calculator</button>
+            <nav role="navigation" aria-label="Calculator selector">
+                <button id="showTipCalculator" data-lang="tip_calculator" role="tab" aria-selected="true" aria-controls="tipCalculator">Tip Calculator</button>
+                <button id="showBillSplitter" data-lang="bill_splitter" role="tab" aria-selected="false" aria-controls="billSplitter">Bill Splitter</button>
+                <button id="showDiscountCalculator" data-lang="discount_calculator" role="tab" aria-selected="false" aria-controls="discountCalculator">Discount Calculator</button>
             </nav>
         </header>
 
-        <main>
-        <section id="tipCalculator" class="calculator">
+        <main role="main">
+        <section id="tipCalculator" class="calculator" role="tabpanel" aria-labelledby="showTipCalculator" aria-hidden="false">
             <h2 data-lang="tip_calculator">Tip Calculator</h2>
             <div class="input-group">
                 <label for="billAmount" data-lang="bill_amount">Bill Amount ($)</label>
-                <input type="text" inputmode="decimal" id="billAmount" placeholder="0.00">
+                <input type="text" inputmode="decimal" id="billAmount" placeholder="0.00" aria-describedby="billAmountHelp" autocomplete="off">
+                <span id="billAmountHelp" class="sr-only">Enter the bill amount in your selected currency</span>
             </div>
             <div class="input-group">
                 <label data-lang="select_tip">Select Tip %</label>
-                <div class="tip-options">
-                    <button class="tip-btn" data-tip="10">10%</button>
-                    <button class="tip-btn" data-tip="15">15%</button>
-                    <input type="number" id="customTip" placeholder="Custom" min="0">
+                <div class="tip-options" role="group" aria-label="Tip percentage options">
+                    <button class="tip-btn" data-tip="10" type="button" tabindex="0">10%</button>
+                    <button class="tip-btn" data-tip="15" type="button" tabindex="0">15%</button>
+                    <input type="number" id="customTip" placeholder="Custom" min="0" max="100" aria-label="Custom tip percentage" autocomplete="off">
                 </div>
             </div>
-            <div class="results">
+            <div class="results" role="region" aria-live="polite" aria-atomic="true">
                 <div class="result-item">
                     <p data-lang="tip_amount">Tip Amount</p>
-                    <span id="tipAmountResult">$0.00</span>
+                    <span id="tipAmountResult" aria-label="Tip amount result">$0.00</span>
                 </div>
                 <div class="result-item">
                     <p data-lang="total">Total</p>
-                    <span id="totalAmountResult">$0.00</span>
+                    <span id="totalAmountResult" aria-label="Total amount result">$0.00</span>
                 </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn reset-btn" id="resetTipBtn" data-lang="reset" aria-label="Reset tip calculator">Reset</button>
+                <button class="action-btn copy-btn" id="copyTipBtn" data-lang="copy" aria-label="Copy results to clipboard">Copy</button>
+                <button class="action-btn share-btn" id="shareTipBtn" data-lang="share" aria-label="Share results">Share</button>
             </div>
         </section>
 
-        <section id="billSplitter" class="calculator hidden">
+        <section id="billSplitter" class="calculator hidden" role="tabpanel" aria-labelledby="showBillSplitter" aria-hidden="true">
             <h2 data-lang="bill_splitter">Bill Splitter</h2>
             <div class="input-group">
                 <label for="totalBill" data-lang="total_bill">Total Bill ($)</label>
-                <input type="text" inputmode="decimal" id="totalBill" placeholder="0.00">
+                <input type="text" inputmode="decimal" id="totalBill" placeholder="0.00" aria-describedby="totalBillHelp" autocomplete="off">
+                <span id="totalBillHelp" class="sr-only">Enter the total bill amount</span>
             </div>
             <div class="input-group">
                 <label for="tipPercentageSplit" data-lang="tip_percentage">Tip %</label>
-                <input type="number" id="tipPercentageSplit" placeholder="15" value="15" min="0">
+                <input type="number" id="tipPercentageSplit" placeholder="15" value="15" min="0" max="100" aria-label="Tip percentage" autocomplete="off">
             </div>
             <div class="input-group">
                 <label for="peopleCount" data-lang="number_of_people">Number of People</label>
-                <input type="number" id="peopleCount" value="1" min="1">
+                <input type="number" id="peopleCount" value="1" min="1" max="100" aria-label="Number of people" autocomplete="off">
             </div>
             <div class="input-group checkbox-group">
-                <input type="checkbox" id="includeTip" checked>
+                <input type="checkbox" id="includeTip" checked aria-describedby="includeTipHelp">
                 <label for="includeTip" data-lang="include_tip">Include tip in split</label>
+                <span id="includeTipHelp" class="sr-only">Check to include tip in per-person calculation</span>
             </div>
-            <div class="results">
+            <div class="results" role="region" aria-live="polite" aria-atomic="true">
                 <div class="result-item">
                     <p data-lang="total_tip">Total Tip</p>
-                    <span id="totalTipResultSplit">$0.00</span>
+                    <span id="totalTipResultSplit" aria-label="Total tip result">$0.00</span>
                 </div>
                 <div class="result-item">
                     <p data-lang="total_per_person">Total per person</p>
-                    <span id="totalPerPersonResult">$0.00</span>
+                    <span id="totalPerPersonResult" aria-label="Amount per person">$0.00</span>
                 </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn reset-btn" id="resetSplitBtn" data-lang="reset" aria-label="Reset bill splitter">Reset</button>
+                <button class="action-btn copy-btn" id="copySplitBtn" data-lang="copy" aria-label="Copy results to clipboard">Copy</button>
+                <button class="action-btn share-btn" id="shareSplitBtn" data-lang="share" aria-label="Share results">Share</button>
             </div>
         </section>
 
-        <section id="discountCalculator" class="calculator hidden">
+        <section id="discountCalculator" class="calculator hidden" role="tabpanel" aria-labelledby="showDiscountCalculator" aria-hidden="true">
             <h2 data-lang="discount_calculator">Discount Calculator</h2>
             <div class="input-group">
                 <label for="originalPrice" data-lang="original_price">Original Price ($)</label>
-                <input type="text" inputmode="decimal" id="originalPrice" placeholder="0.00">
+                <input type="text" inputmode="decimal" id="originalPrice" placeholder="0.00" aria-describedby="originalPriceHelp" autocomplete="off">
+                <span id="originalPriceHelp" class="sr-only">Enter the original price before discount</span>
             </div>
             <div class="input-group">
                 <label for="discountPercentage" data-lang="discount_percentage">Discount (%)</label>
-                <input type="number" id="discountPercentage" placeholder="10" value="10" min="0">
+                <input type="number" id="discountPercentage" placeholder="10" value="10" min="0" max="100" aria-label="Discount percentage" autocomplete="off">
             </div>
-            <div class="results">
+            <div class="results" role="region" aria-live="polite" aria-atomic="true">
                 <div class="result-item">
                     <p data-lang="amount_saved">Amount Saved</p>
-                    <span id="amountSavedResult">$0.00</span>
+                    <span id="amountSavedResult" aria-label="Amount saved">$0.00</span>
                 </div>
                 <div class="result-item">
                     <p data-lang="final_price">Final Price</p>
-                    <span id="finalPriceResult">$0.00</span>
+                    <span id="finalPriceResult" aria-label="Final price after discount">$0.00</span>
                 </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn reset-btn" id="resetDiscountBtn" data-lang="reset" aria-label="Reset discount calculator">Reset</button>
+                <button class="action-btn copy-btn" id="copyDiscountBtn" data-lang="copy" aria-label="Copy results to clipboard">Copy</button>
+                <button class="action-btn share-btn" id="shareDiscountBtn" data-lang="share" aria-label="Share results">Share</button>
             </div>
         </section>
         </main>
